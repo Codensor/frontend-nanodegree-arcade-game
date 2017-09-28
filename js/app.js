@@ -10,10 +10,11 @@ var Enemy = function(x, y, speed) {
 Enemy.prototype.update = function(dt) {
     // All updates to the enemy go here
     this.x += this.speed * dt; // Updates the enemy location
-    // loop enemy from left side after it reaches the right end of the canvas
+    // Loop enemy from left side after it reaches the right end of the canvas
     if(this.x >= 505){
         this.x = 0;
     }
+    checkCollision(this); // // Check for collision with enemies or barrier-walls
 };
 
 Enemy.prototype.render = function() {
@@ -54,11 +55,47 @@ if (keyPress == 'left') {
     }
 };
 
-// Instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+var checkCollision = function(anEnemy) {
+    // check for collision between enemy and player
+    if (
+        player.y + 131 >= anEnemy.y + 90
+        && player.x + 25 <= anEnemy.x + 88
+        && player.y + 73 <= anEnemy.y + 135
+        && player.x + 76 >= anEnemy.x + 11) {
+        console.log('collided');
+        player.x = 202.5;
+        player.y = 383;
+    }
 
+    // check for player reaching top of canvas and winning the game
+    if (player.y + 63 <= 0) {
+        player.x = 202.5;
+        player.y = 383;
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, 505, 171);
+    }
+    // check if player runs into left, bottom, or right canvas walls
+    // prevent player from moving beyond canvas wall boundaries
+    if (player.y > 383 ) {
+        player.y = 383;
+    }
+    if (player.x > 402.5) {
+        player.x = 402.5;
+    }
+    if (player.x < 2.5) {
+        player.x = 2.5;
+    }
+};
 
+// Instantiating objects.
+// Placeing all enemy objects in an array called allEnemies
+// Placeing the player object in a variable called player
+
+var allEnemies = [];
+var player = new Player(202.5, 383, 50);
+var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+
+allEnemies.push(enemy);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
