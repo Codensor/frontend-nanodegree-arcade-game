@@ -4,7 +4,7 @@ var Enemy = function(x, y, speed) {
     this.x = x; // Assigning enemy x co-ordinate
     this.y = y; // Assigning enemy y co-ordinate
     this.speed = speed; // Assigning enemy speed
-    this.sprite = 'images/enemy-bug.png'; // The image/sprite for our enemies
+    this.sprite = 'images/enemy-car.png'; // The image/sprite for our enemies
 };
 
 Enemy.prototype.update = function(dt) {
@@ -22,6 +22,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Function to create our Player
 var Player = function(x, y, speed) {
     // Variables applied to each of our player instances go here
     this.x = x; // Assigning player x co-ordinate
@@ -37,6 +38,7 @@ Player.prototype.update = function (dt) {
 Player.prototype.render = function () {
     // Draw the player on the screen
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    displayScoreLevel(score, gameLevel); // Displaying player score and level
 };
 
 Player.prototype.handleInput = function (keyPress) {
@@ -55,14 +57,13 @@ if (keyPress == 'left') {
     }
 };
 
-var checkCollision = function(anEnemy) {
+var checkCollision = function(enemy) {
     // check for collision between enemy and player
     if (
-        player.y + 131 >= anEnemy.y + 90
-        && player.x + 25 <= anEnemy.x + 88
-        && player.y + 73 <= anEnemy.y + 135
-        && player.x + 76 >= anEnemy.x + 11) {
-        console.log('collided');
+        player.y + 131 >= enemy.y + 90
+        && player.x + 25 <= enemy.x + 88
+        && player.y + 73 <= enemy.y + 135
+        && player.x + 76 >= enemy.x + 11) {
         player.x = 202.5;
         player.y = 383;
     }
@@ -73,6 +74,9 @@ var checkCollision = function(anEnemy) {
         player.y = 383;
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, 505, 171);
+        // Upadating player score and level
+        score += 1;
+        gameLevel += 1;
     }
     // check if player runs into left, bottom, or right canvas walls
     // prevent player from moving beyond canvas wall boundaries
@@ -87,12 +91,25 @@ var checkCollision = function(anEnemy) {
     }
 };
 
+// Function to display player's score
+var displayScoreLevel = function(score, level) {
+    var canvas = document.getElementsByTagName('canvas');
+    var firstCanvasTag = canvas[0];
+
+    // add player score and level to div element created
+    scoreLevelDiv.innerHTML = 'Score: ' + score + ' / ' + 'Level: ' + level;
+    document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
+};
+
 // Instantiating objects.
 // Placeing all enemy objects in an array called allEnemies
 // Placeing the player object in a variable called player
 
 var allEnemies = [];
 var player = new Player(202.5, 383, 50);
+var score = 0;
+var gameLevel = 1;
+var scoreLevelDiv = document.createElement('div');
 var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
 
 allEnemies.push(enemy);
