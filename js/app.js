@@ -23,12 +23,12 @@ Enemy.prototype.render = function() {
 };
 
 // Function to create our Player
-var Player = function(x, y, speed) {
+var Player = function(x, y, speed, sprite) {
     // Variables applied to each of our player instances go here
     this.x = x; // Assigning player x co-ordinate
     this.y = y; // Assigning player y co-ordinate
     this.speed = speed; // Assigning player speed
-    this.sprite = 'images/char-boy.png'; // The image/sprite for our player
+    this.sprite = sprite; // The image/sprite for our player
 };
 
 Player.prototype.update = function (dt) {
@@ -120,7 +120,7 @@ var increaseDifficulty = function(numEnemies) {
 // Placeing the player object in a variable called player
 
 var allEnemies = [];
-var player = new Player(202.5, 383, 50);
+var player = new Player(202.5, 383, 50, avatar);
 var score = 0;
 var gameLevel = 1;
 var scoreLevelDiv = document.createElement('div');
