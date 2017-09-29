@@ -77,6 +77,7 @@ var checkCollision = function(enemy) {
         // Upadating player score and level
         score += 1;
         gameLevel += 1;
+        increaseDifficulty(score); // Increasing game difficulty
     }
     // check if player runs into left, bottom, or right canvas walls
     // prevent player from moving beyond canvas wall boundaries
@@ -99,6 +100,19 @@ var displayScoreLevel = function(score, level) {
     // add player score and level to div element created
     scoreLevelDiv.innerHTML = 'Score: ' + score + ' / ' + 'Level: ' + level;
     document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
+};
+
+// Increase number of enemies on screen based on player's score
+var increaseDifficulty = function(numEnemies) {
+    // remove all previous enemies on canvas
+    allEnemies.length = 0;
+
+    // load new set of enemies
+    for (var i = 0; i <= numEnemies; i++) {
+        var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+
+        allEnemies.push(enemy);
+    }
 };
 
 // Instantiating objects.
