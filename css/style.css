@@ -1,5 +1,6 @@
 body {
     text-align: center;
+    background-image: url("../images/geometry2.png");
 }
 
 /* The Modal (background) */
@@ -27,28 +28,30 @@ body {
 }
 
 /* Player Selection Content */
-.character {
+.imgHold {
     margin: 3%;
+    display:inline-flex;
+}
+
+.imgHold:hover {
+    outline: 5px solid;
+    outline-color: rgba(0, 0, 255, 0.3);
+    background-image: url("../images/Selector.png");
 }
 
 /* Player Image Hover Animation */
-img.character:hover {
-    outline: 5px solid;
-    outline-color: rgba(0, 0, 255, 0.3);
-}
-
-/* Modal animation */
 .animated {
-  animation-duration: 1.5s;
-  animation-fill-mode: both;
-  animation-iteration-count: infinite;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-  40% {transform: translateY(-30px);}
-  60% {transform: translateY(-15px);}
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-30px);}
+    60% {transform: translateY(-15px);}
 }
+
 .bounce {
-  animation-name: bounce;
+    animation-name: bounce;
 }
