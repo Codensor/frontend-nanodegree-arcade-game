@@ -1,10 +1,14 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+var Enemy = function(speed) {
     // Variables applied to each of our enemy instances go here
-    this.x = x; // Assigning enemy x co-ordinate
-    this.y = y; // Assigning enemy y co-ordinate
+    this.x = 0; // Assigning enemy x co-ordinate
+    this.y = enemyY[Math.floor(Math.random() * enemyY.length)]; // Assigning enemy y co-ordinate
     this.speed = speed; // Assigning enemy speed
     this.sprite = 'images/enemy-car.png'; // The image/sprite for our enemies
+    var yIndex = enemyY.indexOf(this.y);
+    if (yIndex > -1) {
+        enemyY.splice(yIndex, 1);
+    }
 };
 
 Enemy.prototype.update = function(dt) {
@@ -24,7 +28,7 @@ Enemy.prototype.render = function() {
 
 // Function to create our Player
 var Player = function(x, y, speed, sprite) {
-    // Variables applied to each of our player instances go here
+    // Variables applied to our player instance go here
     this.x = x; // Assigning player x co-ordinate
     this.y = y; // Assigning player y co-ordinate
     this.speed = speed; // Assigning player speed
@@ -75,9 +79,12 @@ var checkCollision = function(enemy) {
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, 505, 171);
         // Upadating player score and level
-        score += 1;
+        score += 50;
         gameLevel += 1;
-        increaseDifficulty(score); // Increasing game difficulty
+        enemyY.length = 0;
+        enemyY = [30, 70, 115, 155, 195, 235];
+        increaseDifficulty(gameLevel); // Increasing game difficulty
+        gemSpawn(Math.floor(Math.random() * 4)); // Spawning gems on each level
     }
     // check if player runs into left, bottom, or right canvas walls
     // prevent player from moving beyond canvas wall boundaries
@@ -98,7 +105,7 @@ var displayScoreLevel = function(score, level) {
     var firstCanvasTag = canvas[0];
 
     // add player score and level to div element created
-    scoreLevelDiv.innerHTML = 'Score: ' + score + ' / ' + 'Level: ' + level;
+    scoreLevelDiv.innerHTML = 'Score: ' + score + ' | ' + 'Level: ' + level;
     document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
 };
 
@@ -106,12 +113,75 @@ var displayScoreLevel = function(score, level) {
 var increaseDifficulty = function(numEnemies) {
     // remove all previous enemies on canvas
     allEnemies.length = 0;
-
+    var counter;
     // load new set of enemies
-    for (var i = 0; i <= numEnemies; i++) {
-        var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+    if (numEnemies % 2 === 0) {
+        counter = numEnemies / 2;
+        for (var i = 0; i <= counter; i++) {
+            var enemy = new Enemy(Math.random() * 256);
 
-        allEnemies.push(enemy);
+            allEnemies.push(enemy);
+        }
+    } else {
+        counter = (numEnemies - 1) / 2;
+        for (var i = 0; i <= counter; i++) {
+            var enemy = new Enemy(Math.random() * 256);
+
+            allEnemies.push(enemy);
+        }
+    }
+};
+
+var Gems = function() {
+    // Variables applied to each of our gem instances go here
+    var gemArray = ["images/Gem Blue.png", "images/Gem Green.png", "images/Gem Orange.png"];
+    var gemY = [65, 145, 230];
+    var gemRand = gemArray[Math.floor(Math.random() * gemArray.length)];
+    this.x = (Math.floor(Math.random() * 4) * 100) + 2.25; // Assigning gem x co-ordinate
+    this.y = gemY[Math.floor(Math.random() * gemY.length)]; // Assigning gem y co-ordinate
+    console.log(this.y);
+    this.sprite = gemRand; // The image/sprite for our enemies
+};
+
+Gems.prototype.update = function(dt) {
+    // All updates to the gems go here
+    checkObatined(this);
+};
+
+Gems.prototype.render = function() {
+    // Draw the enemy on the screen
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+var checkObatined = function (gemGet) {
+    if (player.y + 131 >= gemGet.y + 90
+        && player.x + 25 <= gemGet.x + 88
+        && player.y + 73 <= gemGet.y + 135
+        && player.x + 76 >= gemGet.x + 11) {
+
+        gemGet.x = -1000;
+        gemGet.y = -1000;
+        if(gemGet.sprite === "images/Gem Blue.png") {
+            score += 5;
+        }
+        else if(gemGet.sprite === "images/Gem Green.png") {
+            score += 10;
+        }
+        else {
+            score += 30;
+        }
+    }
+};
+
+var gemSpawn = function (numGem) {
+    // remove all previous gems on canvas
+    allGems.length = 0;
+
+    // load new set of gems
+    for (var i = 0; i <= numGem; i++) {
+        var gem = new Gems();
+
+        allGems.push(gem);
     }
 };
 
@@ -120,12 +190,16 @@ var increaseDifficulty = function(numEnemies) {
 // Placeing the player object in a variable called player
 
 var allEnemies = [];
+var allGems = [];
 var player = new Player(202.5, 383, 50, avatar);
 var score = 0;
 var gameLevel = 1;
 var scoreLevelDiv = document.createElement('div');
-var enemy = new Enemy(0, Math.random() * 184 + 50, Math.random() * 256);
+var enemyY = [30, 70, 115, 155, 195, 235];
+var enemy = new Enemy(Math.random() * 256);
+var gem = new Gems();
 
+allGems.push(gem);
 allEnemies.push(enemy);
 
 // This listens for key presses and sends the keys to your

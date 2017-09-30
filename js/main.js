@@ -68,7 +68,7 @@ var choosePlayer = function() {
                         imageUrl: avatar,
                         title: 'Ready to Play ' + name + '!',
                         onClose: function () {
-                            var jscripts = ["js/resources.js", "js/app.js", "js/engine.js"];
+                            var jscripts = ["js/app.js", "js/engine.js"];
                             for (var i = 0; i < jscripts.length; i++) {
                                 var linker = document.createElement("script");
                                 linker.setAttribute("src", jscripts[i]);
