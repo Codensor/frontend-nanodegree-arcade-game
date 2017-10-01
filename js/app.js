@@ -1,10 +1,15 @@
 // Enemies our player must avoid
 var Enemy = function(speed) {
     // Variables applied to each of our enemy instances go here
-    this.x = 0; // Assigning enemy x co-ordinate
+    var enemyX = [0, 505];
+    this.x = enemyX[Math.floor(Math.random() * enemyX.length)]; // Assigning enemy x co-ordinate
     this.y = enemyY[Math.floor(Math.random() * enemyY.length)]; // Assigning enemy y co-ordinate
     this.speed = speed; // Assigning enemy speed
-    this.sprite = 'images/enemy-car.png'; // The image/sprite for our enemies
+    if (this.x === 0) {
+        this.sprite = 'images/enemy-car.png'; // The image/sprite for our enemies
+    } else {
+        this.sprite = 'images/enemy-car1.png'; // The image/sprite for our enemies
+    }
     var yIndex = enemyY.indexOf(this.y);
     if (yIndex > -1) {
         enemyY.splice(yIndex, 1);
@@ -13,11 +18,21 @@ var Enemy = function(speed) {
 
 Enemy.prototype.update = function(dt) {
     // All updates to the enemy go here
-    this.x += this.speed * dt; // Updates the enemy location
-    // Loop enemy from left side after it reaches the right end of the canvas
-    if(this.x >= 505){
-        this.x = 0;
+    if (this.sprite === 'images/enemy-car.png') {
+        this.x += this.speed * dt; // Updates the enemy location
+        // Loop enemy from left side after it reaches the right end of the canvas
+        if(this.x >= 505){
+            this.x = 0;
+        }
     }
+    if (this.sprite === 'images/enemy-car1.png') {
+        this.x -= this.speed * dt; // Updates the enemy location
+        // Loop enemy from right side after it reaches the left end of the canvas
+        if(this.x <= 0){
+            this.x = 505;
+        }
+    }
+
     checkCollision(this); // // Check for collision with enemies or barrier-walls
 };
 
@@ -37,6 +52,8 @@ var Player = function(x, y, speed, sprite) {
 
 Player.prototype.update = function (dt) {
     // All updates to the player go here
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 505, 171);
 };
 
 Player.prototype.render = function () {
@@ -81,6 +98,20 @@ var checkCollision = function(enemy) {
         // Upadating player score and level
         score += 50;
         gameLevel += 1;
+        if (gameLevel > 12) {
+            swal ({
+                title: 'Congratulations! You Won!',
+                text: 'Achievements',
+                html: `Score: ${score}`,
+                type: 'success',
+                confirmButtonText: 'Play again!',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                onClose: function () {
+                    window.location.reload(false)
+                }
+            })
+        }
         enemyY.length = 0;
         enemyY = [30, 70, 115, 155, 195, 235];
         increaseDifficulty(gameLevel); // Increasing game difficulty
@@ -117,7 +148,7 @@ var increaseDifficulty = function(numEnemies) {
     // load new set of enemies
     if (numEnemies % 2 === 0) {
         counter = numEnemies / 2;
-        for (var i = 0; i <= counter; i++) {
+        for (var i = 1; i <= counter; i++) {
             var enemy = new Enemy(Math.random() * 256);
 
             allEnemies.push(enemy);
@@ -139,7 +170,6 @@ var Gems = function() {
     var gemRand = gemArray[Math.floor(Math.random() * gemArray.length)];
     this.x = (Math.floor(Math.random() * 4) * 100) + 2.25; // Assigning gem x co-ordinate
     this.y = gemY[Math.floor(Math.random() * gemY.length)]; // Assigning gem y co-ordinate
-    console.log(this.y);
     this.sprite = gemRand; // The image/sprite for our enemies
 };
 

@@ -3,6 +3,20 @@ body {
     background-image: url("../images/geometry2.png");
 }
 
+.firstHead {
+    font-family: 'Pacifico', cursive;
+    letter-spacing: 0.5em;
+}
+
+.firstHead span {
+    font-size: 2em;
+}
+
+canvas {
+    outline: 0.25em solid;
+    outline-color: rgba(0, 0, 255, 0.5);
+}
+
 /* The Modal (background) */
 .charModal {
     display: none; /* Hidden by default */
@@ -34,9 +48,8 @@ body {
 }
 
 .imgHold:hover {
-    outline: 5px solid;
-    outline-color: rgba(0, 0, 255, 0.3);
     background-image: url("../images/Selector.png");
+    cursor: pointer;
 }
 
 /* Player Image Hover Animation */

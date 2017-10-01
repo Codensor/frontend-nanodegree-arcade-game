@@ -5,8 +5,8 @@ var choosePlayer = function() {
     var playerCharacter = document.createElement('div');
     var modalContent = document.createElement('div');
     var heading = document.createElement('h1');
-    // Insert heading fo rthe modal
-    heading.innerHTML = "Please Choose a Character"
+    // Insert heading to the modal
+    heading.innerHTML = "Please choose a character";
     // Appending modal to the document
     modalContent.appendChild(heading);
     playerCharacter.appendChild(modalContent);
@@ -66,12 +66,13 @@ var choosePlayer = function() {
                     swal({
                         type: 'success',
                         imageUrl: avatar,
-                        title: 'Ready to Play ' + name + '!',
+                        title: `${name}<br><br>Ready to play?`,
                         onClose: function () {
                             var jscripts = ["js/app.js", "js/engine.js"];
                             for (var i = 0; i < jscripts.length; i++) {
                                 var linker = document.createElement("script");
                                 linker.setAttribute("src", jscripts[i]);
+                                linker.className += "renders";
                                 document.body.appendChild(linker);
                             }
                         }
@@ -83,6 +84,10 @@ var choosePlayer = function() {
     selection(); // Calling the main funtion to select player skin
 };
 
+var gameName = document.createElement('h1');
+gameName.className += "firstHead";
+gameName.innerHTML = "<span>R</span>USHOUR <span>R</span>UN";
+document.body.appendChild(gameName);
 var avatarName; // Variable to store chosen player name
 var avatar; // Variable to store chosen player skin's src
 choosePlayer(); // Calling the Player Selection Function
