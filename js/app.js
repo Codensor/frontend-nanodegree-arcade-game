@@ -85,8 +85,30 @@ var checkCollision = function(enemy) {
         && player.x + 25 <= enemy.x + 88
         && player.y + 73 <= enemy.y + 135
         && player.x + 76 >= enemy.x + 11) {
+        var hit = document.getElementById("music1");
+        hit.play();
+        avatarHealth -= 10;
+        var healthStat = document.getElementById("meter");
+        healthStat.value = avatarHealth;
         player.x = 202.5;
         player.y = 383;
+
+        if (avatarHealth <= 0) {
+            var lose = document.getElementById("music2");
+            lose.play();
+            swal ({
+                title: 'You Lose! Try Again?',
+                text: 'Achievements',
+                html: `Score: ${score}`,
+                type: 'error',
+                confirmButtonText: 'Play again!',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                onClose: function () {
+                    window.location.reload(false)
+                }
+            })
+        }
     }
 
     // check for player reaching top of canvas and winning the game
@@ -98,7 +120,10 @@ var checkCollision = function(enemy) {
         // Upadating player score and level
         score += 50;
         gameLevel += 1;
+        avatarHealth = 100;
         if (gameLevel > 12) {
+            var win = document.getElementById("music3");
+            win.play();
             swal ({
                 title: 'Congratulations! You Won!',
                 text: 'Achievements',
@@ -189,17 +214,25 @@ var checkObatined = function (gemGet) {
         && player.y + 73 <= gemGet.y + 135
         && player.x + 76 >= gemGet.x + 11) {
 
+        var get = document.getElementById("music0");
+        get.play();
         gemGet.x = -1000;
         gemGet.y = -1000;
-        if(gemGet.sprite === "images/Gem Blue.png") {
-            score += 5;
-        }
-        else if(gemGet.sprite === "images/Gem Green.png") {
+        if (gemGet.sprite === "images/Gem Blue.png") {
             score += 10;
-        }
-        else {
+            avatarHealth += 10;
+        } else if (gemGet.sprite === "images/Gem Green.png") {
+            score += 20;
+            avatarHealth += 20;
+        } else {
             score += 30;
+            avatarHealth += 30;
         }
+        if (avatarHealth > 100) {
+            avatarHealth = 100;
+        }
+        var healthStat = document.getElementById("meter");
+        healthStat.value = avatarHealth;
     }
 };
 
@@ -244,3 +277,23 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+var reload = document.getElementById('reload');
+reload.onclick = function () {
+    var flag = false;
+    swal ({
+        title: 'Reload! Are you sure?',
+        type: 'warning',
+        confirmButtonText: 'Reload!',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        cancelButtonText: 'Continue?',
+        allowEscapeKey: false,
+        onClose: function () {
+            flag = true;
+        }
+    })
+    if (flag) {
+        window.location.reload(false);
+    }
+};

@@ -68,12 +68,36 @@ var choosePlayer = function() {
                         imageUrl: avatar,
                         title: `${name}<br><br>Ready to play?`,
                         onClose: function () {
+                            var restartbutton = document.createElement('div');
+                            var health = document.createElement('div');
+                            var bar = document.createElement('progress');
+                            restartbutton.className += "restart";
+                            health.className += "health";
+                            bar.className += "bar";
+                            bar.setAttribute('value', avatarHealth);
+                            bar.setAttribute('max', 100);
+                            bar.setAttribute('id', 'meter');
+                            restartbutton.innerHTML = "Restart : <span id='reload'>&#10226</span>";
+                            health.innerHTML = "Health : ";
+                            health.appendChild(bar);
+                            document.body.appendChild(restartbutton);
+                            document.body.appendChild(health);
+
                             var jscripts = ["js/app.js", "js/engine.js"];
                             for (var i = 0; i < jscripts.length; i++) {
                                 var linker = document.createElement("script");
                                 linker.setAttribute("src", jscripts[i]);
                                 linker.className += "renders";
                                 document.body.appendChild(linker);
+                            }
+
+                            var audioArray = ["audio/gem.mp3", "audio/hit.mp3", "audio/lose.mp3", "audio/win.mp3"];
+                            for (var i = 0; i < audioArray.length; i++) {
+                                var audioClip = document.createElement('audio');
+                                audioClip.setAttribute("id", "music" + i);
+                                audioClip.setAttribute("src", audioArray[i]);
+                                audioClip.setAttribute("preload", "auto");
+                                document.body.appendChild(audioClip);
                             }
                         }
                     })
@@ -90,4 +114,5 @@ gameName.innerHTML = "<span>R</span>USHOUR <span>R</span>UN";
 document.body.appendChild(gameName);
 var avatarName; // Variable to store chosen player name
 var avatar; // Variable to store chosen player skin's src
+var avatarHealth = 100;
 choosePlayer(); // Calling the Player Selection Function
