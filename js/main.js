@@ -68,28 +68,25 @@ var choosePlayer = function() {
                         imageUrl: avatar,
                         title: `${name}<br><br>Ready to play?`,
                         onClose: function () {
-                            var restartbutton = document.createElement('div');
+                            var leaderBoard = document.createElement('div');
                             var health = document.createElement('div');
                             var bar = document.createElement('progress');
-                            restartbutton.className += "restart";
+                            var statBoard = document.createElement('div');
+                            leaderBoard.className += "leader";
                             health.className += "health";
                             bar.className += "bar";
+                            statBoard.className += "stat";
+                            health.setAttribute('id', 'heal');
                             bar.setAttribute('value', avatarHealth);
                             bar.setAttribute('max', 100);
                             bar.setAttribute('id', 'meter');
-                            restartbutton.innerHTML = "Restart : <span id='reload'>&#10226</span>";
-                            health.innerHTML = "Health : ";
+                            leaderBoard.innerHTML = `<span>Leader Name : ${leaderName}</span> <span>Leader Score : ${leaderScore}</span>`;
+                            health.innerHTML = "Restart : <span id='reload'>&#10226</span> Health : ";
+                            statBoard.innerHTML = `<span>Score : ${score}</span> <span>Level : ${gameLevel}</span>`;
                             health.appendChild(bar);
-                            document.body.appendChild(restartbutton);
+                            document.body.appendChild(leaderBoard);
+                            document.body.appendChild(statBoard);
                             document.body.appendChild(health);
-
-                            var jscripts = ["js/app.js", "js/engine.js"];
-                            for (var i = 0; i < jscripts.length; i++) {
-                                var linker = document.createElement("script");
-                                linker.setAttribute("src", jscripts[i]);
-                                linker.className += "renders";
-                                document.body.appendChild(linker);
-                            }
 
                             var audioArray = ["audio/gem.mp3", "audio/hit.mp3", "audio/lose.mp3", "audio/win.mp3"];
                             for (var i = 0; i < audioArray.length; i++) {
@@ -98,6 +95,14 @@ var choosePlayer = function() {
                                 audioClip.setAttribute("src", audioArray[i]);
                                 audioClip.setAttribute("preload", "auto");
                                 document.body.appendChild(audioClip);
+                            }
+
+                            var jscripts = ["js/app.js", "js/engine.js"];
+                            for (var i = 0; i < jscripts.length; i++) {
+                                var linker = document.createElement("script");
+                                linker.setAttribute("src", jscripts[i]);
+                                linker.className += "renders";
+                                document.body.appendChild(linker);
                             }
                         }
                     })
@@ -108,10 +113,20 @@ var choosePlayer = function() {
     selection(); // Calling the main funtion to select player skin
 };
 
+var leaderName = localStorage.getItem("name");
+var leaderScore = localStorage.getItem("score");
+if (leaderName === null) {
+    leaderName = "No Leader";
+}
+if (leaderScore === null) {
+    leaderScore = "No Score";
+}
 var gameName = document.createElement('h1');
 gameName.className += "firstHead";
-gameName.innerHTML = "<span>R</span>USHOUR <span>R</span>UN";
+gameName.innerHTML = "<span>&#127939</span><span>J</span>ayWalker<span>&#128665</span>";
 document.body.appendChild(gameName);
+var score = 0;
+var gameLevel = 1;
 var avatarName; // Variable to store chosen player name
 var avatar; // Variable to store chosen player skin's src
 var avatarHealth = 100;

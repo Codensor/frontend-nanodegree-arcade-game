@@ -59,7 +59,6 @@ Player.prototype.update = function (dt) {
 Player.prototype.render = function () {
     // Draw the player on the screen
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    displayScoreLevel(score, gameLevel); // Displaying player score and level
 };
 
 Player.prototype.handleInput = function (keyPress) {
@@ -133,7 +132,11 @@ var checkCollision = function(enemy) {
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 onClose: function () {
-                    window.location.reload(false)
+                    if (leaderScore <= score || leaderScore === "No Score") {
+                        localStorage.setItem('name', avatarName);
+                        localStorage.setItem('score', score);
+                    }
+                    window.location.reload(false);
                 }
             })
         }
@@ -153,16 +156,6 @@ var checkCollision = function(enemy) {
     if (player.x < 2.5) {
         player.x = 2.5;
     }
-};
-
-// Function to display player's score
-var displayScoreLevel = function(score, level) {
-    var canvas = document.getElementsByTagName('canvas');
-    var firstCanvasTag = canvas[0];
-
-    // add player score and level to div element created
-    scoreLevelDiv.innerHTML = 'Score: ' + score + ' | ' + 'Level: ' + level;
-    document.body.insertBefore(scoreLevelDiv, firstCanvasTag[0]);
 };
 
 // Increase number of enemies on screen based on player's score
@@ -248,16 +241,50 @@ var gemSpawn = function (numGem) {
     }
 };
 
+
+var keypad = function () {
+    var keypadOne = document.createElement('div');
+    keypadOne.className += "keys";
+    keypadOne.id = 'arrowone';
+    document.body.appendChild(keypadOne);
+    var keypadTwo = document.createElement('div');
+    keypadTwo.className += "keys";
+    keypadTwo.id = 'arrowtwo';
+    document.body.appendChild(keypadTwo);
+    var keypadThree = document.createElement('div');
+    keypadThree.id = 'arrowthree';
+    keypadThree.className += "keys";
+    document.body.appendChild(keypadThree);
+    var keypadUp = document.createElement('img');
+    keypadUp.className += "keyimg";
+    keypadUp.id = "arrowup";
+    keypadUp.src = "images/up.png"
+    keypadOne.appendChild(keypadUp);
+    var keypadLeft = document.createElement('img');
+    keypadLeft.className += "keyimg";
+    keypadLeft.id = "arrowleft";
+    keypadLeft.src = "images/left.png"
+    keypadTwo.appendChild(keypadLeft);
+    var keypadRight = document.createElement('img');
+    keypadRight.className += "keyimg";
+    keypadRight.id = "arrowright";
+    keypadRight.src = "images/right.png"
+    keypadTwo.appendChild(keypadRight);
+    var keypadDown = document.createElement('img');
+    keypadDown.className += "keyimg";
+    keypadDown.id = "arrowdown";
+    keypadDown.src = "images/down.png"
+    keypadThree.appendChild(keypadDown);
+}
+
 // Instantiating objects.
 // Placeing all enemy objects in an array called allEnemies
 // Placeing the player object in a variable called player
 
 var allEnemies = [];
 var allGems = [];
+setTimeout(function () {keypad()}, 500);
 var player = new Player(202.5, 383, 50, avatar);
-var score = 0;
-var gameLevel = 1;
-var scoreLevelDiv = document.createElement('div');
 var enemyY = [30, 70, 115, 155, 195, 235];
 var enemy = new Enemy(Math.random() * 256);
 var gem = new Gems();
@@ -275,12 +302,8 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
-});
-
 var reload = document.getElementById('reload');
 reload.onclick = function () {
-    var flag = false;
     swal ({
         title: 'Reload! Are you sure?',
         type: 'warning',
@@ -289,11 +312,29 @@ reload.onclick = function () {
         showCancelButton: true,
         cancelButtonText: 'Continue?',
         allowEscapeKey: false,
-        onClose: function () {
-            flag = true;
-        }
-    })
-    if (flag) {
+    }).then(function () {
         window.location.reload(false);
-    }
+    }, function () {
+    })
 };
+    player.handleInput(allowedKeys[e.keyCode]);
+});
+
+setTimeout(function () {
+    var buttonLeft = document.getElementById("arrowleft");
+    buttonLeft.onclick = function() {
+        player.x -= player.speed;
+    };
+    var buttonUp = document.getElementById("arrowup");
+    buttonUp.onclick = function() {
+        player.y -= player.speed - 20;
+    };
+    var buttonRight = document.getElementById("arrowright");
+    buttonRight.onclick = function() {
+        player.x += player.speed;
+    };
+    var buttonDown = document.getElementById("arrowdown");
+    buttonDown.onclick = function() {
+        player.y += player.speed - 20;
+    };
+}, 500);
