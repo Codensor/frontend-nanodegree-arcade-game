@@ -1,3 +1,5 @@
+/* Document Body Styles */
+
 body {
     text-align: center;
     background-image: url("../images/geometry2.png");
@@ -5,23 +7,30 @@ body {
     width: 100%;
 }
 
-/* The Modal (background) */
+/* End of Document Body Styles */
+
+/* Opening Modal (background) */
+
 .charModal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    display: none;
+    position: absolute;
+    z-index: 1;
+    padding-top: 100px;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }
 
-/* Modal Content */
+/* End of Opening Modal (background) */
+
+/* Opening Modal Content */
+
 .modalContent {
+    position: relative;
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
@@ -29,7 +38,10 @@ body {
     width: 80%;
 }
 
+/* End of Opening Modal Content */
+
 /* Player Selection Content */
+
 .imgHold {
     margin: 3%;
     display:inline-flex;
@@ -40,7 +52,10 @@ body {
     cursor: pointer;
 }
 
+/* End of Player Selection Content */
+
 /* Player Image Hover Animation */
+
 .animated {
     animation-duration: 1s;
     animation-fill-mode: both;
@@ -57,6 +72,10 @@ body {
     animation-name: bounce;
 }
 
+/* End of Player Image Hover Animation */
+
+/* Game Title Styles */
+
 .firstHead {
     font-family: 'Pacifico', cursive;
     letter-spacing: 0.35em;
@@ -66,6 +85,10 @@ body {
 .firstHead span {
     font-size: 2em;
 }
+
+/* End of Game Title Styles */
+
+/* Leader Board Styles */
 
 .leader {
     margin-bottom: 1.05em;
@@ -77,6 +100,10 @@ body {
     margin-right: 2em;
 }
 
+/* End of Leader Board Styles */
+
+/* Score & Level Board Styles */
+
 .stat {
     margin-bottom: 1.05em;
     text-align: center;
@@ -86,6 +113,10 @@ body {
     margin-left: 2em;
     margin-right: 2em;
 }
+
+/* End of Score & Level Board Styles */
+
+/* Reload and Health Bar Styles */
 
 #reload {
     margin-right: 5em;
@@ -125,13 +156,26 @@ progress::-webkit-progress-value {
     box-shadow: inset 0 -2px 4px rgba(0,0,0,0.4), 0 2px 5px 0px rgba(0,0,0,0.3);
 }
 
+/* End of Reload and Health Bar Styles */
+
+/* Canvas Styles */
+
 canvas {
     outline: 0.25em solid;
     outline-color: rgba(0, 0, 255, 0.5);
 }
 
+/* End of Canvas Styles */
+
+/* Keypad Styles */
+
 .keys {
     text-align: center;
+}
+
+.keyimg {
+    height: 4em;
+    width : 4em;
 }
 
 .keyimg:hover {
@@ -142,32 +186,101 @@ canvas {
     margin-top: 3em;
 }
 
-#arrowup {
-    height: 4em;
-    width : 4em;
-}
-
 #arrowtwo {
     margin-top: -1em;
 }
 
 #arrowleft {
     margin: 0 0.70em 0 0 ;
-    height: 4em;
-    width : 4em;
 }
 
 #arrowright {
     margin: 0 0 0 0.75em;
-    height: 4em;
-    width : 4em;
 }
 
 #arrowthree {
     margin-top: -1em;
 }
 
-#arrowdown {
-    height: 4em;
-    width : 4em;
+/* End of Keypad Styles */
+
+/* Media changes for screen below 500px */
+
+@media screen and (max-width: 500px) {
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+        40% {transform: translateY(-0.2em);}
+        60% {transform: translateY(-0.1em);}
+    }
+
+    .firstHead {
+        margin-top: -0.75em;
+        font-size: 1em;
+        letter-spacing: 0.35em;
+    }
+
+    .firstHead span {
+        font-size: 2em;
+    }
+
+    .leader {
+        font-size: 0.75em;
+    }
+
+    .leader span {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    .stat {
+        font-size: 0.75em;
+    }
+
+    .stat span {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    #reload {
+        margin-right: 1em;
+    }
+
+    .health {
+        font-size: 0.75em;
+    }
+
+    progress {
+        width: 10em;
+        padding: 0.2em;
+        height: 0.5em;
+    }
+
+    .keyimg {
+        height: 2.25em;
+        width : 2.25em;
+    }
+
+    #arrowone {
+        margin-top: 0.5em;
+    }
+
+    #arrowtwo {
+        margin-top: -1em;
+    }
+
+    #arrowleft {
+        margin: 0 0.5em 0 0 ;
+    }
+
+    #arrowright {
+        margin: 0 0 0 0.55em;
+    }
+
+    #arrowthree {
+        margin-top: -1em;
+    }
+
 }
+
+/* End of Media screen changes */
