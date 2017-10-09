@@ -178,3 +178,11 @@ var avatarName; // Variable to store chosen player name
 var avatar; // Variable to store chosen player skin's src
 var avatarHealth = 100; // Setting player health points
 choosePlayer(); // Calling the Player Selection Function
+
+// Function to disable default behaviour of arrow keys
+window.addEventListener("keydown", function(e) {
+    // space and arrow keys
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
