@@ -2,13 +2,13 @@
 
 ## Table of Contents
 
--- [Introduction](#introduction)
+- [Introduction](#introduction)
 - [Instructions](#instructions)
 - [Contribution](#contribution)
 
 ## Introduction
 
-	This game is based of the popular frogger game. The game requires the player to jaywalk across the roads while avoiding oncoming cars and collecting gems.The game can be used to test the player's hand-to-eye co-ordination.So what are you waiting for go ahead and PLAY Jaywalker :) !
+This game is based of the popular frogger game. The game requires the player to jaywalk across the roads while avoiding oncoming cars and collecting gems.The game can be used to test the player's hand-to-eye co-ordination.So what are you waiting for go ahead and PLAY Jaywalker :) !
 
 ## Instructions
 
@@ -32,23 +32,23 @@
 
 	The header of the game consists of the following stats :
 
-		- #### Leader Name:
-			Shows the name of the player with highest score.
+	- #### Leader Name:
+		Shows the name of the player with highest score.
 
-		- #### Leader Score:
-			Shows the score of the player who scored the highest score.
+	- #### Leader Score:
+		Shows the score of the player who scored the highest score.
 
-		- #### Score:
-			Shows the player's score for the current game.
+	- #### Score:
+		Shows the player's score for the current game.
 
-		- #### Level:
-			Shows the current level of the current game.
+	- #### Level:
+		Shows the current level of the current game.
 
-		- #### Restart:
-			Relaod button is used to reset the game.
+	- #### Restart:
+		Relaod button is used to reset the game.
 
-		- #### Health:
-			Health bar shows the player health for the current level.
+	- #### Health:
+		Health bar shows the player health for the current level.
 
 - ### Player Car Collisions:
 
@@ -61,9 +61,9 @@
 	![alt text](/images/gems.gif "Collecting Gems")
 
 	The player can obtain gems by moving close to them. The gems will add to the player's score and also add to the player's health points.
-		- Gold/Yellow Gem adds 30 points to both score and health bar
-		- Green Gem adds 20 points to both score and health bar
-		- Blue Gem adds 10 points to both score and health bar
+	- Gold/Yellow Gem adds 30 points to both score and health bar
+	- Green Gem adds 20 points to both score and health bar
+	- Blue Gem adds 10 points to both score and health bar
 
 - ### Level Clear:
 
@@ -97,6 +97,6 @@
 
 ## Contribution
 
-	Contributions that can enhance the game are welcome :)
+Contributions that can enhance the game are welcome :)
 
-	For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
