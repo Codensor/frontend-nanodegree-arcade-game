@@ -195,6 +195,39 @@ progress::-webkit-progress-value {
 
 /* End of Keypad Styles */
 
+/* Media changes for screen below 1280px */
+
+@media screen and (max-width: 1280px) {
+
+    .keyimg {
+        height: 4em;
+        width : 4em;
+    }
+
+    #arrowone {
+        margin-top: 0.5em;
+    }
+
+    #arrowtwo {
+        margin-top: -1em;
+    }
+
+    #arrowleft {
+        margin: 0 0.5em 0 0 ;
+    }
+
+    #arrowright {
+        margin: 0 0 0 5em;
+    }
+
+    #arrowthree {
+        margin-top: -1em;
+    }
+
+}
+
+/* End of Media screen changes for 1280px */
+
 /* Media changes for screen below 500px */
 
 @media screen and (max-width: 500px) {
@@ -274,4 +307,4 @@ progress::-webkit-progress-value {
 
 }
 
-/* End of Media screen changes */
+/* End of Media screen changes for 500px */
