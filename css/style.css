@@ -248,8 +248,8 @@ progress::-webkit-progress-value {
     }
 
     .keyimg {
-        height: 2.25em;
-        width : 2.25em;
+        height: 3em;
+        width : 3em;
     }
 
     #arrowone {
@@ -265,7 +265,7 @@ progress::-webkit-progress-value {
     }
 
     #arrowright {
-        margin: 0 0 0 0.55em;
+        margin: 0 0 0 5em;
     }
 
     #arrowthree {
