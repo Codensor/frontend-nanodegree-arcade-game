@@ -34,16 +34,52 @@ Enemy.prototype.update = function(dt) {
             this.x = viewWidth;
         }
     }
-
-    checkCollision(this); // Check for collision with enemies or barrier-walls
 };
 
 Enemy.prototype.render = function() {
     // Draw the car on the screen
-    var putImg = Resources.get(this.sprite);;
+    var putImg = Resources.get(this.sprite);
     var newWidth = viewWidth / 5;
     var newHeight = (putImg.height * newWidth) / putImg.width;
     ctx.drawImage(putImg, this.x, this.y, newWidth, newHeight);
+};
+
+// Function to check for collision between car and player
+Enemy.prototype.checkCollision = function() {
+    var putImg = Resources.get('images/enemy-car.png');
+    var newWidth = viewWidth / 5;
+    var newHeight = (putImg.height * newWidth) / putImg.width;
+    if (
+        player.y + ((newHeight * 76.6) / 100) >= this.y + ((newHeight * 52.63) / 100) &&
+        player.x + ((newWidth * 24.75) / 100) <= this.x + ((newWidth * 87.13) / 100) &&
+        player.y + ((newHeight * 42.7) / 100) <= this.y + ((newHeight * 78.95) / 100) &&
+        player.x + ((newWidth * 75.24) / 100) >= this.x + ((newWidth * 10.89) / 100)) {
+        var hit = document.getElementById('music1');
+        hit.play(); // Playing audio for collision
+        avatarHealth -= 10; // Reducing player health
+        var healthStat = document.getElementById('meter');
+        healthStat.value = avatarHealth; // Updating player health on the document
+        //Reseting player location the intial position
+        player.x = playerXLoc;
+        player.y = playerYLoc;
+        // Condition if player health falls to 0
+        if (avatarHealth <= 0) {
+            var lose = document.getElementById('music2');
+            lose.play();
+            swal({
+                title: 'You Lose! Try Again?',
+                text: 'Achievements',
+                html: `Score: ${score}`,
+                type: 'error',
+                confirmButtonText: 'Play again!',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                onClose: function() {
+                    window.location.reload(false);
+                }
+            });
+        }
+    }
 };
 
 // Function to create our Player
@@ -58,7 +94,11 @@ Player.prototype.update = function(dt) {
     // All updates to the player go here
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, 505, 171);
-    gameStatUpdater(); // Calling function to update score and level
+    // Update player score and level
+    var gamerScore = document.getElementById('points');
+    var gamerLevel = document.getElementById('level');
+    gamerScore.innerHTML = `Score : ${score}`;
+    gamerLevel.innerHTML = `Level : ${gameLevel}`;
 };
 
 Player.prototype.render = function() {
@@ -88,79 +128,12 @@ Player.prototype.handleInput = function(keyPress) {
     }
 };
 
-// Function to create gems
-var Gems = function() {
-    // Variables applied to each of our gem instances
-    var gemArray = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png']; // Types of gems
-    var gemY = [];
-    var gemX = [];
-    var gemLoc = [10.73, 23.93, 37.95];
-    for (var i = 0; i < gemLoc.length; i++) {
-        gemY.push((viewHeight * gemLoc[i]) / 100);
-    }
-    for (var i = 0; i < 5; i++) {
-        gemX.push((viewWidth / 5) * i);
-    }
-    var gemRand = gemArray[Math.floor(Math.random() * gemArray.length)];
-    this.x = gemX[Math.floor(Math.random() * gemX.length)]; // Assigning gem x co-ordinate
-    this.y = gemY[Math.floor(Math.random() * gemY.length)]; // Assigning gem y co-ordinate
-    this.sprite = gemRand; // The image/sprite for our gem
-};
-
-Gems.prototype.update = function(dt) {
-    // All updates to the gem go here
-    checkObatined(this);
-};
-
-Gems.prototype.render = function() {
-    // Draw the gem on the screen
-    var putImg = Resources.get(this.sprite);
+// Check for player reaching top of canvas and winning the game
+Player.prototype.boundaries = function() {
     var newWidth = viewWidth / 5;
-    var newHeight = (putImg.height * newWidth) / putImg.width;
-    ctx.drawImage(putImg, this.x, this.y, newWidth, newHeight);
-};
-
-// Function to check for collision between car and player
-var checkCollision = function(enemy) {
-    var putImg = Resources.get('images/enemy-car.png');
-    var newWidth = viewWidth / 5;
-    var newHeight = (putImg.height * newWidth) / putImg.width;
-    if (
-        player.y + ((newHeight * 76.6) / 100) >= enemy.y + ((newHeight * 52.63) / 100) &&
-        player.x + ((newWidth * 24.75) / 100) <= enemy.x + ((newWidth * 87.13) / 100) &&
-        player.y + ((newHeight * 42.7) / 100) <= enemy.y + ((newHeight * 78.95) / 100) &&
-        player.x + ((newWidth * 75.24) / 100) >= enemy.x + ((newWidth * 10.89) / 100)) {
-        var hit = document.getElementById('music1');
-        hit.play(); // Playing audio for collision
-        avatarHealth -= 10; // Reducing player health
-        var healthStat = document.getElementById('meter');
-        healthStat.value = avatarHealth; // Updating player health on the document
-        //Reseting player location the intial position
-        player.x = playerXLoc;
-        player.y = playerYLoc;
-        // Condition if player health falls to 0
-        if (avatarHealth <= 0) {
-            var lose = document.getElementById('music2');
-            lose.play();
-            swal({
-                title: 'You Lose! Try Again?',
-                text: 'Achievements',
-                html: `Score: ${score}`,
-                type: 'error',
-                confirmButtonText: 'Play again!',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                onClose: function() {
-                    window.location.reload(false)
-                }
-            })
-        }
-    }
-
-    // Check for player reaching top of canvas and winning the game
-    if (player.y + (viewHeight / 14) <= 0) {
-        player.x = playerXLoc;
-        player.y = playerYLoc;
+    if (this.y + (viewHeight / 14) <= 0) {
+        this.x = playerXLoc;
+        this.y = playerYLoc;
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, 505, 171);
         // Upadating player score,level and health
@@ -188,7 +161,7 @@ var checkCollision = function(enemy) {
                     }
                     window.location.reload(false);
                 }
-            })
+            });
         }
         enemyY.length = 0; // Reseting the no.of cars
         setEnemyArray(); // Setting possible y co-ordinates for the car in enemyY array
@@ -197,47 +170,70 @@ var checkCollision = function(enemy) {
     }
     // check if player runs into left, bottom, or right canvas walls
     // prevent player from moving beyond canvas wall boundaries
-    if (player.y > playerYLoc) {
-        player.y = playerYLoc;
+    if (this.y > playerYLoc) {
+        this.y = playerYLoc;
     }
-    if (player.x > newWidth * 4) {
-        player.x = newWidth * 4;
+    if (this.x > newWidth * 4) {
+        this.x = newWidth * 4;
     }
-    if (player.x < 0) {
-        player.x = 0;
+    if (this.x < 0) {
+        this.x = 0;
     }
 };
 
-// Function to update player score and level
-var gameStatUpdater = function() {
-    var gamerScore = document.getElementById('points');
-    var gamerLevel = document.getElementById('level');
-    gamerScore.innerHTML = `Score : ${score}`;
-    gamerLevel.innerHTML = `Level : ${gameLevel}`;
+// Function to create gems
+var Gems = function() {
+    // Variables applied to each of our gem instances
+    var gemArray = ['images/Gem Blue.png', 'images/Gem Green.png', 'images/Gem Orange.png']; // Types of gems
+    var gemY = [];
+    var gemX = [];
+    var gemLoc = [10.73, 23.93, 37.95];
+    for (var i = 0; i < gemLoc.length; i++) {
+        gemY.push((viewHeight * gemLoc[i]) / 100);
+    }
+    for (var j = 0; j < 5; j++) {
+        gemX.push((viewWidth / 5) * j);
+    }
+    var gemRand = gemArray[Math.floor(Math.random() * gemArray.length)];
+    this.x = gemX[Math.floor(Math.random() * gemX.length)]; // Assigning gem x co-ordinate
+    this.y = gemY[Math.floor(Math.random() * gemY.length)]; // Assigning gem y co-ordinate
+    this.sprite = gemRand; // The image/sprite for our gem
+};
+
+Gems.prototype.update = function(dt) {
+    // Updates to the gems go here
+};
+
+Gems.prototype.render = function() {
+    // Draw the gem on the screen
+    var putImg = Resources.get(this.sprite);
+    var newWidth = viewWidth / 5;
+    var newHeight = (putImg.height * newWidth) / putImg.width;
+    ctx.drawImage(putImg, this.x, this.y, newWidth, newHeight);
 };
 
 // Function to check if gem obtained by player
-var checkObatined = function(gemGet) {
+Gems.prototype.checkObatined = function() {
     var putImg = Resources.get('images/Gem Blue.png');
     var newWidth = viewWidth / 5;
     var newHeight = (putImg.height * newWidth) / putImg.width;
     if (
-        player.y + ((newHeight * 76.6) / 100) >= gemGet.y + ((newHeight * 52.63) / 100) &&
-        player.x + ((newWidth * 24.75) / 100) <= gemGet.x + ((newWidth * 87.13) / 100) &&
-        player.y + ((newHeight * 42.7) / 100) <= gemGet.y + ((newHeight * 78.95) / 100) &&
-        player.x + ((newWidth * 75.24) / 100) >= gemGet.x + ((newWidth * 10.89) / 100)) {
+        player.y + ((newHeight * 76.6) / 100) >= this.y + ((newHeight * 52.63) / 100) &&
+        player.x + ((newWidth * 24.75) / 100) <= this.x + ((newWidth * 87.13) / 100) &&
+        player.y + ((newHeight * 42.7) / 100) <= this.y + ((newHeight * 78.95) / 100) &&
+        player.x + ((newWidth * 75.24) / 100) >= this.x + ((newWidth * 10.89) / 100)) {
 
         var get = document.getElementById('music0');
         get.play(); // Playing audio for obatining gem
         // Removing gem from game
-        gemGet.x = -1000;
-        gemGet.y = -1000;
+        this.x = -1000;
+        this.y = -1000;
         // If blue gem add 10 to score and health
-        if (gemGet.sprite === 'images/Gem Blue.png') {
+        if (this.sprite === 'images/Gem Blue.png') {
             score += 10;
             avatarHealth += 10;
             // If green gem add 20 to score and health
-        } else if (gemGet.sprite === 'images/Gem Green.png') {
+        } else if (this.sprite === 'images/Gem Green.png') {
             score += 20;
             avatarHealth += 20;
             // If gold gem add 30 to score and health
@@ -277,10 +273,10 @@ var increaseDifficulty = function(numEnemies) {
         }
     } else {
         counter = (numEnemies - 1) / 2;
-        for (var i = 0; i <= counter; i++) {
-            var enemy = new Enemy(Math.random() * 100);
+        for (var k = 0; k <= counter; k++) {
+            var cars = new Enemy(Math.random() * 100);
 
-            allEnemies.push(enemy);
+            allEnemies.push(cars);
         }
     }
 };
@@ -307,7 +303,7 @@ var playerYLoc = (viewHeight * 62.75) / 100; // Player y co-ordinate
 var allEnemies = []; // Array of all cars on the canvas
 var allGems = []; // Array of all gems on the canvas
 setTimeout(function() {
-    keypad()
+    keypad();
 }, 500); // Adding keypad to the document after 500ms
 var player = new Player(avatar); // Creating player object
 var enemyY = []; // Array to hold possible y co-ordinate values for the car
@@ -332,7 +328,7 @@ reload.onclick = function() {
         allowEscapeKey: false,
     }).then(function() {
         window.location.reload(false);
-    }, function() {})
+    }, function() {});
 };
 
 // Function Adding keypad to the document
@@ -375,7 +371,7 @@ var keypad = function() {
     keypadDown.id = 'arrowdown';
     keypadDown.src = 'images/down.png';
     keypadThree.appendChild(keypadDown);
-}
+};
 
 // This listens for key presses and sends the keys to Player.handleInput() method.
 document.addEventListener('keyup', function(e) {

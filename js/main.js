@@ -57,11 +57,11 @@ var choosePlayer = function() {
                     inputValidator: function(value) {
                         return new Promise(function(resolve, reject) {
                             if (value) {
-                                resolve()
+                                resolve();
                             } else {
-                                reject('You need to write something!')
+                                reject('You need to write something!');
                             }
-                        })
+                        });
                     }
                 }).then(function(name) {
                     avatarName = name;
@@ -105,15 +105,15 @@ var choosePlayer = function() {
                             }
                             // Adding the remaining js files the document
                             var jscripts = ['js/app.js', 'js/engine.js'];
-                            for (var i = 0; i < jscripts.length; i++) {
+                            for (var j = 0; j < jscripts.length; j++) {
                                 var linker = document.createElement('script');
                                 linker.className += 'renders';
-                                linker.setAttribute('src', jscripts[i]);
+                                linker.setAttribute('src', jscripts[j]);
                                 document.body.appendChild(linker);
                             }
                         }
-                    })
-                })
+                    });
+                });
             });
         }
     };
@@ -150,7 +150,7 @@ function setViews() {
     if (view >= 1280) {
         viewWidth = 505;
         viewHeight = 606;
-    // if screen width is below 1280px
+        // if screen width is below 1280px
     } else {
         viewWidth = (view * (75 / 100));
         viewHeight = (606 * viewWidth) / 505;
@@ -182,7 +182,7 @@ choosePlayer(); // Calling the Player Selection Function
 // Function to disable default behaviour of arrow keys
 window.addEventListener("keydown", function(e) {
     // space and arrow keys
-    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+    if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 }, false);

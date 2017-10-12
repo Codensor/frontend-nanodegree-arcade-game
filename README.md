@@ -10,6 +10,8 @@
 
 This game is based of the popular frogger game. The game requires the player to jaywalk across the roads while avoiding oncoming cars and collecting gems.The game can be used to test the player's hand-to-eye co-ordination.So what are you waiting for go ahead and PLAY Jaywalker :) !
 
+To play the game please load index.html file in your browser.
+
 ## Instructions
 
 - ### Choose Player Skin:

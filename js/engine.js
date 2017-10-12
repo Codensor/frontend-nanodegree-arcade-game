@@ -93,11 +93,14 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allGems.forEach(function(gem) {
             gem.update();
+            gem.checkObatined();
         });
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
+            enemy.checkCollision();
         });
         player.update();
+        player.boundaries();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -121,7 +124,6 @@ var Engine = (function(global) {
             numRows = 6,
             numCols = 5,
             row, col;
-
         /* Loop through the number of rows and columns we've defined above
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
@@ -135,7 +137,8 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                var putImg = Resources.get(rowImages[row])
+                // Getting dimensions of the environment images
+                var putImg = Resources.get(rowImages[row]);
                 var newWidth = viewWidth / 5;
                 var newHeight = (putImg.height * newWidth) / putImg.width;
                 ctx.drawImage(putImg, col * newWidth, row * (newHeight * 48.54) / 100, newWidth, newHeight);
@@ -192,7 +195,6 @@ var Engine = (function(global) {
         'images/Gem Orange.png'
     ]);
     Resources.onReady(init);
-
     /* Assign the canvas' context object to the global variable (the window
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
